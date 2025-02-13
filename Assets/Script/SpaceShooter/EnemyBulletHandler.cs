@@ -1,10 +1,9 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
-public class SpaceShooterManager : MonoBehaviour
+
+public class EnemyBulletHandler : MonoBehaviour
 {
-    public static SpaceShooterManager instance;
+    public static EnemyBulletHandler instance;
 
     public int amountToPool;
     public GameObject bulletPrefab;
@@ -12,10 +11,11 @@ public class SpaceShooterManager : MonoBehaviour
 
     private void Awake()
     {
-        if(instance == null)
+        if (instance == null)
         {
             instance = this;
-        } else if(instance != this)
+        }
+        else if (instance != this)
         {
             Destroy(gameObject);
         }
@@ -29,7 +29,7 @@ public class SpaceShooterManager : MonoBehaviour
 
     void SpawnObjectPool()
     {
-        for(int i = 0; i < amountToPool; i++)
+        for (int i = 0; i < amountToPool; i++)
         {
             GameObject obj = Instantiate(bulletPrefab);
             obj.SetActive(false);
@@ -39,9 +39,9 @@ public class SpaceShooterManager : MonoBehaviour
 
     public GameObject CallPooledObject()
     {
-        for(int i = 0; i < pooledObjects.Count; i++)
+        for (int i = 0; i < pooledObjects.Count; i++)
         {
-            if(!pooledObjects[i].activeInHierarchy)
+            if (!pooledObjects[i].activeInHierarchy)
             {
                 return pooledObjects[i];
             }

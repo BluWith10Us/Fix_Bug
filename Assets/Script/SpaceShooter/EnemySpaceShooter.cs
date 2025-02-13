@@ -56,16 +56,22 @@ public class EnemySpaceShooter : MonoBehaviour
                 SpaceShip.score++;
                 gameObject.SetActive(false);
             }
-            Destroy(collision.gameObject);
+            collision.gameObject.SetActive(false);
         }
     }
 
     public void SpawnBullet()
     {
         //Instantiate to clone a game object
-        GameObject bullet = Instantiate(BulletPrefab,transform.position, Quaternion.identity);
-        Rigidbody2D bulletRb = bullet.GetComponent<Rigidbody2D>();
-        bulletRb.linearVelocity = new Vector2(0f, -BulletSpeed);
+        GameObject bullet = EnemyBulletHandler.instance.CallPooledObject();
+
+        if (bullet != null)
+        {
+            bullet.transform.position = transform.position;
+            bullet.SetActive(true);
+            Rigidbody2D bulletRb = bullet.GetComponent<Rigidbody2D>();
+            bulletRb.linearVelocity = new Vector2(0f, -BulletSpeed);
+        }
     }
     
     public void MoveEnemy()

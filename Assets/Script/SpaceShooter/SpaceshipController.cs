@@ -9,7 +9,6 @@ public class SpaceshipController : MonoBehaviour
 
     public float Speed;
     public float BulletSpeed;
-    public GameObject bulletPrefab;
     public Transform BulletSpawnHere;
     public GameObject GameClearScreen;
     public TextMeshProUGUI textValue,hpValue;
@@ -64,11 +63,19 @@ public class SpaceshipController : MonoBehaviour
 
     public void SpawnBullet()
     {
-        //Instantiate to clone a game object
-        GameObject bullet = Instantiate(bulletPrefab, BulletSpawnHere.position, Quaternion.identity);
-        Rigidbody2D bulletRb = bullet.GetComponent<Rigidbody2D>();
-        bulletRb.linearVelocity = new Vector2(0f, BulletSpeed);
+        ////Instantiate to clone a game object
+        //GameObject bullet = Instantiate(bulletPrefab, BulletSpawnHere.position, Quaternion.identity);
+        //Rigidbody2D bulletRb = bullet.GetComponent<Rigidbody2D>();
+        //bulletRb.linearVelocity = new Vector2(0f, BulletSpeed);
+        GameObject bullet = SpaceShooterManager.instance.CallPooledObject();
 
+        if(bullet != null)
+        {
+            bullet.transform.position = BulletSpawnHere.transform.position;
+            bullet.SetActive(true);
+            Rigidbody2D bulletRb = bullet.GetComponent<Rigidbody2D>();
+            bulletRb.linearVelocity = new Vector2(0f, BulletSpeed);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -76,7 +83,7 @@ public class SpaceshipController : MonoBehaviour
         if (collision.CompareTag("EnemyBullet"))
         {
             hitponts--;
-            Destroy(collision.gameObject);
+            collision.gameObject.SetActive(false);
         }
     }
 
